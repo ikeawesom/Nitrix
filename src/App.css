@@ -1,1 +1,60 @@
+@import url("https://fonts.googleapis.com/css2?family=Lexend&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
 @import "tailwindcss";
+
+.not:input {
+  font-family: "Lexend", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+body {
+  @apply bg-gray-50 text-gray-900;
+}
+
+h1,
+h2,
+h3 {
+  @apply font-bold text-gray-800;
+}
+
+table {
+  @apply w-full border-collapse;
+}
+
+th,
+td {
+  @apply border border-gray-300 p-2 text-left;
+}
+
+thead {
+  @apply bg-gray-100;
+}
+
+button,
+.upload {
+  @apply shadow-sm cursor-pointer block w-fit text-sm mr-4 py-2 px-4
+    rounded-full font-semibold
+    bg-blue-50 text-blue-700
+    hover:bg-blue-100 duration-150;
+}
+
+select {
+  @apply bg-white px-3 py-2 rounded-full ml-4 border-gray-200 border shadow-sm;
+}
+
+.container {
+  @apply max-w-6xl mx-auto px-4 py-8;
+}
+
+.text-error {
+  @apply text-red-600;
+}
+
+.text-loading {
+  @apply text-blue-500;
+}
