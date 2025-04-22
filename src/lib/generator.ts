@@ -13,7 +13,7 @@ export function generateAllTablesCode(
     .join("\n\n");
 }
 
-function generateTableCode(
+export function generateTableCode(
   table: TableData,
   format: CodeFormat,
   theme: CodeTheme
