@@ -17,17 +17,18 @@ export async function generateHtmlProjectZip(
   <title>Generated with Nitrix</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body class="p-6 font-sans ${getBodyThemeClass(theme)}">
+<body class="p-6 font-sans grid place-items-center ${getBodyThemeClass(theme)}">
+<div className="flex flex-col items-center justify-center gap-y-4 ">
   <h1 class="text-2xl font-bold mb-4">Generated with Nitrix.</h1>`;
 
-  const htmlFooter = `
+  const htmlFooter = `</div>
 </body>
 </html>`;
 
   const tableHtml = tables
     .map(
       (t) => `
-  <section class="mb-8">
+  <section class="mb-8 w-full">
     ${generateTableCode(t, "html", theme)}
   </section>
   `
@@ -67,7 +68,7 @@ export async function generateReactProjectZip(
 
   const tableComponentCode = tableComponents
     .map((name: string) => {
-      return `<section className="mb-8"><${name} /></ section>`;
+      return `<section className="mb-8 w-full"><${name} /></ section>`;
     })
     .join(`\n`);
 
@@ -227,10 +228,14 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     `${importTableCode}\n
 export default function App() {
   return (
-    <main className=\"p-6 font-sans\ ${getBodyThemeClass(theme)}">
+  <div className="w-full min-h-screen grid place-items-center p-6 ${getBodyThemeClass(
+    theme
+  )}">
+    <main className="font-sans flex flex-col items-center justify-center gap-y-4">
       <h1 className=\"text-2xl font-bold mb-4\">Generated with Nitrix.</h1>
       ${tableComponentCode}
     </main>
+    </div>
   );
 }`
   );

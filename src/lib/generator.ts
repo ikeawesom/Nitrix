@@ -1,4 +1,4 @@
-import { getTableThemeClass, toCamelCase } from "./helpers";
+import { getRowThemeClass, getTableThemeClass, toCamelCase } from "./helpers";
 import { TableData } from "./parser";
 
 export type CodeFormat = "html" | "react" | "react-native";
@@ -47,14 +47,19 @@ export function generateHTMLTable(
     .map(
       (row) =>
         `<tr>${headers
-          .map((h) => `<td class="px-4 py-2">${row[h] ?? ""}</td>`)
+          .map(
+            (h) =>
+              `<td class="px-4 py-2 ${getRowThemeClass(theme)}">${
+                row[h] ?? ""
+              }</td>`
+          )
           .join("")}</tr>`
     )
     .join("\n");
 
   return `
 <h2 class="mb-2">${name}</h2>
-<table class="${themeClass}">
+<table class="${themeClass} w-full">
   <thead><tr>${thead}</tr></thead>
   <tbody>${tbody}</tbody>
 </table>
@@ -77,7 +82,7 @@ export const ${camelName} = () => {
   return (
     <div>
       <h2 className="mb-2">${name}</h2>
-      <table className="${themeClass}">
+      <table className="${themeClass} w-full">
         <thead className="p-3">
           <tr>${headers
             .map((h) => `<th className="px-4 py-2">${h}</th>`)
@@ -87,7 +92,12 @@ export const ${camelName} = () => {
           {data.map((row, i) => (
             <tr key={i}>
               ${headers
-                .map((h) => `<td className="px-4 py-2">{row["${h}"]}</td>`)
+                .map(
+                  (h) =>
+                    `<td className="px-4 py-2 ${getRowThemeClass(
+                      theme
+                    )}">{row["${h}"]}</td>`
+                )
                 .join("")}
             </tr>
           ))}
