@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { CodeFormat, CodeTheme } from "../lib/generator";
 import { TableData } from "../lib/parser";
 import {
