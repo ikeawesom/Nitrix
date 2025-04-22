@@ -66,10 +66,10 @@ function generateReactComponent(
   theme: CodeTheme
 ): string {
   const themeClass = getThemeClass(theme);
-  const camelName = name.replace(/\s+/g, "");
+  const camelName = toCamelCase(name);
 
   return `
-export const ${camelName}Table = () => {
+export const ${camelName} = () => {
   const data = ${JSON.stringify(rows, null, 2)};
   return (
     <div>
@@ -101,7 +101,7 @@ function generateReactNativeView(
   return `
 import { View, Text, ScrollView } from 'react-native';
 
-export const ${name}Table = () => {
+export const ${name} = () => {
   const data = ${JSON.stringify(rows, null, 2)};
   return (
     <ScrollView>
@@ -136,4 +136,15 @@ function getThemeClass(theme: CodeTheme): string {
     default:
       return "table-auto";
   }
+}
+
+function toCamelCase(input: string): string {
+  return (
+    input
+      .replace(/[_\s-]+/g, " ")
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join("")
+      .replace(/[^a-zA-Z0-9]/g, "") + "Table"
+  );
 }
