@@ -1,3 +1,4 @@
+import { getTableThemeClass, toCamelCase } from "./helpers";
 import { TableData } from "./parser";
 
 export type CodeFormat = "html" | "react" | "react-native";
@@ -13,7 +14,7 @@ export function generateAllTablesCode(
     .join("\n\n");
 }
 
-function generateTableCode(
+export function generateTableCode(
   table: TableData,
   format: CodeFormat,
   theme: CodeTheme
@@ -34,23 +35,25 @@ function generateTableCode(
 }
 
 // 1. HTML
-function generateHTMLTable(
+export function generateHTMLTable(
   name: string,
   headers: string[],
   rows: Record<string, any>[],
   theme: CodeTheme
 ): string {
-  const themeClass = getThemeClass(theme);
-  const thead = headers.map((h) => `<th>${h}</th>`).join("");
+  const themeClass = getTableThemeClass(theme);
+  const thead = headers.map((h) => `<th class="px-4 py-2">${h}</th>`).join("");
   const tbody = rows
     .map(
       (row) =>
-        `<tr>${headers.map((h) => `<td>${row[h] ?? ""}</td>`).join("")}</tr>`
+        `<tr>${headers
+          .map((h) => `<td class="px-4 py-2">${row[h] ?? ""}</td>`)
+          .join("")}</tr>`
     )
     .join("\n");
 
   return `
-<h2>${name}</h2>
+<h2 class="mb-2">${name}</h2>
 <table class="${themeClass}">
   <thead><tr>${thead}</tr></thead>
   <tbody>${tbody}</tbody>
@@ -59,13 +62,13 @@ function generateHTMLTable(
 }
 
 // 2. React
-function generateReactComponent(
+export function generateReactComponent(
   name: string,
   headers: string[],
   rows: Record<string, any>[],
   theme: CodeTheme
 ): string {
-  const themeClass = getThemeClass(theme);
+  const themeClass = getTableThemeClass(theme);
   const camelName = toCamelCase(name);
 
   return `
@@ -73,15 +76,19 @@ export const ${camelName} = () => {
   const data = ${JSON.stringify(rows, null, 2)};
   return (
     <div>
-      <h2>${name}</h2>
+      <h2 className="mb-2">${name}</h2>
       <table className="${themeClass}">
-        <thead>
-          <tr>${headers.map((h) => `<th>${h}</th>`).join("")}</tr>
+        <thead className="p-3">
+          <tr>${headers
+            .map((h) => `<th className="px-4 py-2">${h}</th>`)
+            .join("")}</tr>
         </thead>
-        <tbody>
+        <tbody className="p-3">
           {data.map((row, i) => (
             <tr key={i}>
-              ${headers.map((h) => `<td>{row["${h}"]}</td>`).join("")}
+              ${headers
+                .map((h) => `<td className="px-4 py-2">{row["${h}"]}</td>`)
+                .join("")}
             </tr>
           ))}
         </tbody>
@@ -93,7 +100,7 @@ export const ${camelName} = () => {
 }
 
 // 3. React Native
-function generateReactNativeView(
+export function generateReactNativeView(
   name: string,
   headers: string[],
   rows: Record<string, any>[]
@@ -120,31 +127,4 @@ export const ${name} = () => {
   );
 };
 `.trim();
-}
-
-// 4. TailwindCSS classes
-function getThemeClass(theme: CodeTheme): string {
-  switch (theme) {
-    case "light":
-      return "table-auto border border-gray-300";
-    case "dark":
-      return "table-auto bg-gray-800 text-white border border-gray-600";
-    case "material":
-      return "table-auto border border-gray-200 shadow-md";
-    case "minimal":
-      return "table-fixed border-collapse border border-slate-300";
-    default:
-      return "table-auto";
-  }
-}
-
-function toCamelCase(input: string): string {
-  return (
-    input
-      .replace(/[_\s-]+/g, " ")
-      .split(" ")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join("")
-      .replace(/[^a-zA-Z0-9]/g, "") + "Table"
-  );
 }

@@ -12,7 +12,9 @@ export default function CodeExporter({ code, format }: CodeExporterProps) {
 
     const link = document.createElement("a");
     link.href = url;
-    link.download = `generated-code.${format === "html" ? "html" : "jsx"}`;
+    link.download = `${format}-code-nitrix.${
+      format === "html" ? "html" : "tsx"
+    }`;
     document.body.appendChild(link);
     link.click();
 
@@ -22,12 +24,12 @@ export default function CodeExporter({ code, format }: CodeExporterProps) {
   };
 
   return (
-    <div className="mt-4">
+    <div className="mt-4 w-full">
       <button
         onClick={handleDownload}
-        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full"
       >
-        Download Generated Code
+        Download {format === "html" ? "HTML" : "React Component"} Code
       </button>
     </div>
   );

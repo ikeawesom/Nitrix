@@ -40,7 +40,7 @@ export default function FileUploader({ onParsed }: FileUploaderProps) {
   };
 
   return (
-    <div className="mb-4 cursor-pointer">
+    <div className="mb-4 w-fit">
       <label htmlFor="input" className="upload">
         Upload SQLite Database (.sqlite or .db)
       </label>
@@ -50,8 +50,10 @@ export default function FileUploader({ onParsed }: FileUploaderProps) {
         accept=".sqlite,.db"
         onChange={handleFileChange}
       />
-      {loading && <p className="text-blue-600 mt-2">Parsing database...</p>}
-      {error && <p className="text-red-600 mt-2">{error}</p>}
+      {loading && (
+        <p className="text-blue-600 mt-4 text-sm">Parsing database...</p>
+      )}
+      {error && <p className="text-red-600 mt-4 text-sm">{error}</p>}
     </div>
   );
 }
